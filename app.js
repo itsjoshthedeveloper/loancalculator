@@ -8,17 +8,33 @@ const totalPayment = document.querySelector('#total-payment');
 const totalInterest = document.querySelector('#total-interest');
 const card = document.querySelector('.card');
 const heading = document.querySelector('.heading');
+const loader = document.querySelector('#loading');
+const results = document.querySelector('#results');
 
 // Load all event listeners
 loadEventListeners();
 console.log('loaded all event listeners');
 function loadEventListeners() {
   // Add submit event
-  form.addEventListener('submit', calculateResults);
+  form.addEventListener('submit', loading);
+}
+
+// Loading process
+function loading(e) {
+  console.log('Loading...');
+  // Hide results
+  results.style.display = 'none';
+
+  // Show loader
+  loader.style.display = 'block';
+
+  setTimeout(calculateResults, 2000);
+
+  e.preventDefault();
 }
 
 // Calculate results
-function calculateResults(e) {
+function calculateResults() {
   console.log('Calculating...');
 
   // Get inputs
@@ -34,11 +50,15 @@ function calculateResults(e) {
     monthlyPayment.value = monthly.toFixed(2);
     totalPayment.value = (monthly * calculatedPayments).toFixed(2);
     totalInterest.value = (monthly * calculatedPayments - principal).toFixed(2);
+
+    // Show results
+    results.style.display = 'block';
   } else {
     showError('Please check your numbers');
   }
 
-  e.preventDefault();
+  // Hide loader
+  loader.style.display = 'none';
 }
 
 // Show error
